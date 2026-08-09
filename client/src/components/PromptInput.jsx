@@ -64,12 +64,13 @@ variant = "default"}) => {
    }
 
   return (
-    <div className={`bg-white border-zinc-200 rounded-xl flex items-end gap-2 focus-within:ring-1 focus-within:ring-zinc-300
-    transition ${large ? "p-4" : "p-3"}`}>
+    <div className={`bg-white border border-zinc-200 rounded-xl flex items-end gap-2
+     focus-within:ring-1 focus-within:ring-zinc-300 transition
+          ${large ? "p-4" : "p-3"}`}>
     
   <textarea ref={textareaRef} 
      value={value} 
-     onchange={(e)=>setValue(e.target.value)}
+     onChange={(e)=>setValue(e.target.value)}
      onKeyDown={handleKeyDown}
      placeholder={placeholder}
      disabled={loading} 
