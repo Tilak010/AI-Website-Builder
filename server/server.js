@@ -5,12 +5,13 @@ import cookieParser from "cookie-parser";
 import dns from "dns";
 import connectToDatabase from "./config/db.js";
 import authRouter from "./routes/authRoutes.js";
+import projectRouter from "./routes/projectRoutes.js";
 
 const app = express();
 
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
-connectToDatabase()
+await connectToDatabase()
 
 app.use(cors({origin: process.env.ORIGINS.split(","),credentials:true}))
 app.use(cookieParser())
@@ -18,6 +19,7 @@ app.use(express.json())
 
 app.get("/", (req, res)=> res.send("Server is Live!"))
 app.use('/api/auth', authRouter)
+app.use("/api/projects", projectRouter)
 
 //Centralized error handler
 app.use((err, _req, res, _next)=>{
