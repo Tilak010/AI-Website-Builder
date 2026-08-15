@@ -97,7 +97,7 @@ export function AppContextProvider({children}){
         }
     }
 
-    const loadProject = async (id, silent = false)=>{
+    const loadProject = useCallback(async (id, silent = false) => {
         if(!user) return;
         if(!silent) setLoadingActiveProject(true)
             try {
@@ -122,7 +122,7 @@ export function AppContextProvider({children}){
             }finally{
                 if(!silent) setLoadingActiveProject(false)
             }
-    }
+  }, [user, navigate]);
 
     //Automaticaly poll active project status if generating or pending
     useEffect(()=>{
@@ -218,7 +218,7 @@ export function AppContextProvider({children}){
     const updateProjectFiles = useCallback(
         async (files) => {
            if(!activeProject || !user) return;
-           debouncedSave(files, activeProject._id)
+           debounceSave(files, activeProject._id)
         },[activeProject, user, debounceSave]
     )
 

@@ -14,4 +14,5 @@ export function authMiddleware(req, res, next){
     } catch (err) {
         res.status(401).json({ error: "Session expired or invalid. Please sign in again."});
     }
+    
 }
