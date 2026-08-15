@@ -9,11 +9,24 @@ import projectRouter from "./routes/projectRoutes.js";
 
 const app = express();
 
+
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
 await connectToDatabase()
 
-app.use(cors({origin: process.env.ORIGINS.split(","),credentials:true}))
+const allowedOrigins = process.env.ORIGINS.split(",");
+
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
+    credentials: true
+}));
+
 app.use(cookieParser())
 app.use(express.json())
 
