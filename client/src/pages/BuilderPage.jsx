@@ -41,7 +41,7 @@ const BuilderPage = () => {
     if(!id) return;
     setPublishing(true)
     try {
-      await api.post(`/api/projects/${id}/publish`);
+      await api.put(`/api/projects/${id}/publish`);
       const url = `${window.location.origin}/publish/${id}`;
       setPublishUrl(url);
       toast.success("Website published successfully!")

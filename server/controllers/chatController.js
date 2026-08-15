@@ -47,7 +47,7 @@ export function buildManifest(files){
       }
 
       // Recent messages for context (last 4 max)
-      const recentMessages = project.messages.slices(-4).map((m)=>({
+      const recentMessages = project.messages.slice(-4).map((m)=>({
           role: m.pole,
           content: m.content,
       }))

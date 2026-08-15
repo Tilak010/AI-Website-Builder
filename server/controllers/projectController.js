@@ -31,7 +31,7 @@ export async function createProject (req, res) {
             {role: "assistant", content: 'Planning project structure...'},
         ],
         version: 0,
-        owner: req.user.userID,
+        owner: req.user.userId,
         status: "pending",
         filesPlanned: [],
         filesGenerated: [],
@@ -166,7 +166,7 @@ export async function getProject (req, res) {
         return;
     }
 
-    const project = await project.findOne({_id: req.params.id, owner: req.user.userId})
+    const project = await Project.findOne({_id: req.params.id, owner: req.user.userId})
 
     if(!project){
         res.status(404).json({ error: "Project not found"});
@@ -247,9 +247,7 @@ export async function updateProjectFiles (req, res) {
 
      const filesObj = {};
     for (const [path, entry] of Object.entries(files)) {
-        if(typeof content === "string"){
-            filesObj[path] = entry.content;
-        }
+        filesObj[path] = entry.content;
     }
     
     res.json({

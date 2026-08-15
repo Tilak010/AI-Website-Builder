@@ -115,7 +115,7 @@ const HomePage = () => {
                     <button
                     onClick={(e)=>{
                       e.stopPropagation();
-                      handleDelete(p._Id)
+                      handleDelete(p._id)
                     }}
                     className='p-1.5 rounded-md text-zinc-200 hover:text-red-400 hover:bg-white/10 opacity-0 
                     group-hover:opacity-100 transition-opacity'>
