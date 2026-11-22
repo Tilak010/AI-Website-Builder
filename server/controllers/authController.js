@@ -62,9 +62,15 @@ export async function login(req, res) {
         return; 
     }
 
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) {
+       res.status(401).json({error: "Invalid email or password"})
+        return;
+    }
+
     setSessionCookie(res, {userId: user._id.toString(), email: user.email})
 
-    res.status(201).json({
+    res.status(200).json({
         user: {
             _id: user._id,
             name: user.name,
