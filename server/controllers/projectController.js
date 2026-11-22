@@ -1,7 +1,6 @@
 import { Project } from "../models/Project.js";
 import crypto from "crypto"
 import { generateProject } from "../services/ai.js";
-import { timeStamp } from "console";
 
 function hashContent(content){
     return crypto.createHash("md5").update(content).digest("hex").slice(0,12)
@@ -246,7 +245,7 @@ export async function updateProjectFiles (req, res) {
     await project.save();
 
      const filesObj = {};
-    for (const [path, entry] of Object.entries(files)) {
+    for (const [path, entry] of Object.entries(project.files)) {
         filesObj[path] = entry.content;
     }
     

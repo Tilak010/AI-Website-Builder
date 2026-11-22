@@ -1,5 +1,6 @@
 import { Project } from "../models/Project.js";
 import { reviseProject } from "../services/ai.js";
+import { applyOperations } from "../services/diff.js";
 
 export function buildManifest(files){
     const manifest = [];
@@ -41,19 +42,19 @@ export function buildManifest(files){
       const manifest = buildManifest(project.files);
 
       //Include All file contents so the AI can do accurate search/replace
-      const releventFiles = {};
+      const relevantFiles = {};
       for (const [path, entry] of Object.entries(project.files)) {
-        releventFiles[path] = entry.content;
+        relevantFiles[path] = entry.content;
       }
 
       // Recent messages for context (last 4 max)
       const recentMessages = project.messages.slice(-4).map((m)=>({
-          role: m.pole,
+          role: m.role,
           content: m.content,
       }))
 
       console.log(
-        `[AI] Revising project ${project._id}: "${promt.slice(0,80)}..."` +
+        `[AI] Revising project ${project._id}: "${prompt.slice(0,80)}..."` +
         `(${manifest.length} files, manifest ~${JSON.stringify(manifest).length} chars)`,
       );
 
