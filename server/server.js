@@ -9,17 +9,38 @@ import projectRouter from "./routes/projectRoutes.js";
 
 const app = express();
 
-const allowedOrigins = process.env.ORIGINS
-    ? process.env.ORIGINS.split(",").map(o => o.trim())
-    : ["http://localhost:5173", "http://localhost:3000"];
+const configuredOrigins = process.env.ORIGINS
+    ? process.env.ORIGINS.split(",").map(o => o.trim().replace(/\/$/, ""))
+    : [];
+
+const defaultLocalOrigins = [
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:3000"
+];
 
 app.use(cors({
     origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error("Not allowed by CORS"));
+        if (!origin) return callback(null, true);
+        const cleanOrigin = origin.replace(/\/$/, "");
+
+        // Allow localhost development
+        if (defaultLocalOrigins.includes(cleanOrigin)) {
+            return callback(null, true);
         }
+
+        // Allow explicitly configured origins from env
+        if (configuredOrigins.includes(cleanOrigin)) {
+            return callback(null, true);
+        }
+
+        // Allow any Vercel deployment preview or production domain
+        if (/^https:\/\/[a-zA-Z0-9_-]+\.vercel\.app$/i.test(cleanOrigin)) {
+            return callback(null, true);
+        }
+
+        callback(null, false);
     },
     credentials: true
 }));

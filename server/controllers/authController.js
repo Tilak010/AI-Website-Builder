@@ -14,6 +14,7 @@ const setSessionCookie= (res, payload)=>{
         maxAge: 30 * 24 * 60 * 60 * 1000, //30 Days
         path:"/",
     })
+    return token;
 }
 
 
@@ -38,14 +39,15 @@ export async function register(req, res) {
         password
     })
 
-    setSessionCookie(res, {userId: user._id.toString(), email: user.email})
+    const token = setSessionCookie(res, {userId: user._id.toString(), email: user.email})
 
     res.status(201).json({
         user: {
             _id: user._id,
             name: user.name,
             email: user.email
-        }
+        },
+        token
     })
 }
 
@@ -69,14 +71,15 @@ export async function login(req, res) {
         return;
     }
 
-    setSessionCookie(res, {userId: user._id.toString(), email: user.email})
+    const token = setSessionCookie(res, {userId: user._id.toString(), email: user.email})
 
     res.status(200).json({
         user: {
             _id: user._id,
             name: user.name,
             email: user.email
-        }
+        },
+        token
     })
 }
 
